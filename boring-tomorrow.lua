@@ -1,7 +1,7 @@
 -- test colors: :highlight
 
 vim.o.background = "light"
-vim.o.termguicolors = true
+vim.o.termguicolors = false
 
 if vim.g.colors_name then vim.cmd("hi clear") end
 
@@ -9,35 +9,66 @@ vim.cmd("syntax reset")
 
 vim.g.colors_name = "Boring Tomorrow"
 
--- Default GUI Colours
-local foreground = "#000000"
-local background = "#ffffff"
-local selection = "#efefef"
-local red = "#ffc1bf"
-local orange = "#f5871f"
-local yellow = "#fee2ae"
-local aqua = "#3e999f"
-local purple = "#8959a8"
-local window = "#efefef"
+-- Default Colours using ANSI standard integers
+local term_colors = {
+  black = 0,
+  red = 1,
+  green = 2,
+  yellow = 3,
+  blue = 4,
+  magenta = 5,
+  cyan = 6,
+  white = 7,
+  br_black = 8,
+  br_red = 9,
+  br_green = 10,
+  br_yellow = 11,
+  br_blue = 12,
+  br_magenta = 13,
+  br_cyan = 14,
+  br_white = 15,
+}
+
+-- Used by UI elements implicitly
+local foreground = term_colors.black
+local background = term_colors.br_white
+local selection = term_colors.white
+local window = term_colors.white
 
 -- github diff colors
-local diffadd = "#e6ffeb"
-local diffrm = "#ffebe9"
-local diffupdateadd = "#aaf2bb"
-local diffupdaterm = "#ffc1bf"
+local diffadd = term_colors.green
+local diffrm = term_colors.red
+local diffupdateadd = term_colors.br_green
+local diffupdaterm = term_colors.br_red
 
-local hl = function(group, params) return vim.api.nvim_set_hl(0, group, params) end
+local hl = function(group, params)
+  local cterm_params = {}
+  if params.fg then cterm_params.ctermfg = params.fg end
+  if params.bg then cterm_params.ctermbg = params.bg end
+  if params.bold then
+    cterm_params.bold = true
+    cterm_params.cterm = cterm_params.cterm or {}
+    cterm_params.cterm.bold = true
+  end
+  if params.reverse then
+    cterm_params.reverse = true
+    cterm_params.cterm = cterm_params.cterm or {}
+    cterm_params.cterm.reverse = true
+  end
+  if params.link then cterm_params.link = params.link end
+  return vim.api.nvim_set_hl(0, group, cterm_params)
+end
 
 -- Interface Highlighting
-hl("LineNr", { fg = "darkGrey" })
+hl("LineNr", { fg = term_colors.br_black })
 hl("Normal", { fg = foreground, bg = background })
 hl("NormalFloat", { link = "Normal" })
 hl("Winbar", { link = "Normal" })
 hl("WinbarNC", { link = "Normal" })
 hl("NonText", { fg = selection })
 hl("SpecialKey", { fg = selection })
-hl("Search", { bg = yellow })
-hl("CurSearch", { bg = yellow })
+hl("Search", { bg = term_colors.br_yellow })
+hl("CurSearch", { bg = term_colors.br_yellow })
 hl("TabLine", { bg = window, fg = foreground, reverse = true })
 hl("TabLineFill", { bg = window, fg = foreground, reverse = true })
 hl("StatusLine", { bg = window, fg = window, reverse = true })
@@ -48,10 +79,10 @@ hl("Directory", { fg = foreground })
 hl("ModeMsg", { bg = background })
 hl("MoreMsg", { bg = background })
 hl("Question", { bg = background })
-hl("WarningMsg", { bg = red })
+hl("WarningMsg", { fg = foreground, bg = term_colors.br_red })
 hl("ErrorMsg", { fg = foreground, bg = diffupdaterm })
-hl("NvimInternalError", { bg = red })
-hl("MatchParen", { bg = yellow })
+hl("NvimInternalError", { fg = foreground, bg = term_colors.br_red })
+hl("MatchParen", { bg = term_colors.br_yellow })
 hl("Folded", { bg = background, fg = foreground })
 hl("FoldColumn", { bg = background })
 hl("CursorLine", { bg = window })
@@ -103,12 +134,12 @@ hl("CocGitRemovedSign", { bg = background })
 hl("CocGitChangeRemovedSign", { bg = background })
 
 -- ShowMarks Highlighting
-hl("ShowMarksHLl", { fg = orange, bg = background })
-hl("ShowMarksHLo", { fg = purple, bg = background })
-hl("ShowMarksHLu", { fg = yellow, bg = background })
-hl("ShowMarksHLm", { fg = aqua, bg = background })
+hl("ShowMarksHLl", { fg = term_colors.yellow, bg = background })
+hl("ShowMarksHLo", { fg = term_colors.magenta, bg = background })
+hl("ShowMarksHLu", { fg = term_colors.br_yellow, bg = background })
+hl("ShowMarksHLm", { fg = term_colors.cyan, bg = background })
 
 -- misc
 hl("Underlined", { fg = foreground })
 hl("CocMenuSel", { bold = true })
-hl("CocSearch", { fg = foreground, bg = yellow })
+hl("CocSearch", { fg = foreground, bg = term_colors.br_yellow })

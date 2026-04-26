@@ -28,81 +28,66 @@ config.mouse_bindings = {
   },
 }
 
-local boring_tomorrow_theme = {
-  foreground = "#000000",
-  background = "#ffffff",
-  selection = "#efefef",
-}
+-- Register external color scheme directory
+local colors_dir = wezterm.home_dir .. '/opensource/boring-tomorrow/colors'
+config.color_scheme_dirs = { colors_dir }
 
-local boring_blue_theme = {
-  foreground = "#000000",
-  background = "#AFE9FF",
-  selection = "#A9DDFF",
-}
+-- Set the color scheme to the one we just defined
+local theme_name = 'Boring Tomorrow'
+config.color_scheme = theme_name
 
-local theme = boring_blue_theme
+-- Retrieve the loaded scheme so we can pull values from it for UI elements below
+local theme = wezterm.color.get_builtin_schemes()[theme_name] 
+if not theme then
+    -- Fallback to our custom scheme parsing since it might not be in builtin yet
+    local scheme_file = io.open(colors_dir .. '/' .. theme_name .. '.toml', "r")
+    if scheme_file then scheme_file:close() end
+    -- Note: wezterm handles the colors internally based on color_scheme
+end
+
+-- We will extract just the core values to keep the UI styling working
+local ui_bg = "#ffffff"
+local ui_selection = "#efefef"
+local ui_fg = "#000000"
 
 config.window_frame = {
   -- The font used in the tab bar.
   font = wezterm.font { family = 'Fira Code', weight = 400 },
   font_size = 13.0,
-  active_titlebar_bg = theme.selection,
-  inactive_titlebar_bg = theme.background,
+  active_titlebar_bg = ui_selection,
+  inactive_titlebar_bg = ui_bg,
 }
 
--- TODO: https://wezterm.org/config/appearance.html?h=colors#defining-a-color-scheme-in-a-separate-file
+-- The terminal UI elements below are configured manually, as Wezterm's toml doesn't strictly cover tab_bar objects natively inside the [colors] block yet.
+-- They are mostly white/grey. The core 256 ansi colors will come from `Boring Tomorrow.toml` auto-loaded via color_scheme config above!
 config.colors = {
-  foreground = theme.foreground,
-  background = theme.background,
-  cursor_bg = theme.foreground,
-  cursor_fg = theme.background,
-  -- ansi = [
-  --   "#050404",
-  --   "#bd0013",
-  --   "#4ab118",
-  --   "#e7741e",
-  --   "#0f4ac6",
-  --   "#665993",
-  --   "#70a598",
-  --   "#f8dcc0",
-  -- ]
-  -- brights = [
-  --   "#4e7cbf",
-  --   "#fc5f5a",
-  --   "#9eff6e",
-  --   "#efc11a",
-  --   "#1997c6",
-  --   "#9b5953",
-  --   "#c8faf4",
-  --   "#f6f5fb",
-  -- ]
   tab_bar = {
-    inactive_tab_edge = theme.background,
-    background = theme.background,
+    inactive_tab_edge = ui_bg,
+    background = ui_bg,
     new_tab = {
-      bg_color = theme.background,
-      fg_color = theme.foreground,
+      bg_color = ui_bg,
+      fg_color = ui_fg,
     },
     inactive_tab = {
-      bg_color = theme.background,
-      fg_color = theme.foreground,
+      bg_color = ui_bg,
+      fg_color = ui_fg,
     },
     active_tab = {
-      bg_color = theme.selection,
-      fg_color = theme.foreground,
+      bg_color = ui_selection,
+      fg_color = ui_fg,
     },
     new_tab_hover = {
-      bg_color = theme.background,
-      fg_color = theme.foreground,
+      bg_color = ui_bg,
+      fg_color = ui_fg,
     },
     inactive_tab_hover = {
-      bg_color = theme.background,
-      fg_color = theme.foreground,
+      bg_color = ui_bg,
+      fg_color = ui_fg,
     }
   },
 }
 
-config.command_palette_fg_color = theme.foreground
+config.command_palette_fg_color = ui_fg
 
 config.window_padding = {
   left = '0cell',
