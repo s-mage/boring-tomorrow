@@ -96,7 +96,7 @@ hl("ColorColumn", { bg = window })
 hl("Conceal", { fg = foreground, bg = selection })
 
 -- comments are important, make them stand out
-hl("Comment", { bold = true })
+hl("Comment", { fg = term_colors.green, bold = true })
 hl("Todo", { link = "Comment" })
 
 -- normalize the rest to be black on white

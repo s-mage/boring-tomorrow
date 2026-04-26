@@ -37,7 +37,9 @@ local theme_name = 'Boring Tomorrow'
 config.color_scheme = theme_name
 
 -- Retrieve the loaded scheme so we can pull values from it for UI elements below
-local theme = wezterm.color.get_builtin_schemes()[theme_name] 
+local theme = wezterm.color.get_builtin_schemes()[theme_name]
+
+-- FIXME: use theme to get ui_bg, ui_fg, ui_selection
 if not theme then
     -- Fallback to our custom scheme parsing since it might not be in builtin yet
     local scheme_file = io.open(colors_dir .. '/' .. theme_name .. '.toml', "r")
