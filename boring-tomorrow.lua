@@ -6,7 +6,7 @@
 local M = {}
 
 M.term_colors = {
-  black = 255,
+  black = 232,
   red = 1,
   green = 2,
   yellow = 3,
