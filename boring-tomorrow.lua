@@ -1,17 +1,12 @@
--- test colors: :highlight
+-- .config/nvim/lua/boring-tomorrow/init.lua
+-- Boring Tomorrow colorscheme.
+-- Colors used by the colorscheme itself, fzf.vim and lualine.nvim live here.
+-- for autoload: :help runtimepath
 
-vim.o.background = "light"
-vim.o.termguicolors = false
+local M = {}
 
-if vim.g.colors_name then vim.cmd("hi clear") end
-
-vim.cmd("syntax reset")
-
-vim.g.colors_name = "Boring Tomorrow"
-
--- Default Colours using ANSI standard integers
-local term_colors = {
-  black = 0,
+M.term_colors = {
+  black = 255,
   red = 1,
   green = 2,
   yellow = 3,
@@ -29,117 +24,161 @@ local term_colors = {
   br_white = 15,
 }
 
--- Used by UI elements implicitly
-local foreground = term_colors.black
-local background = term_colors.br_white
-local selection = term_colors.white
-local window = term_colors.white
+-- usage: in init.lua
+--   local boring_tomorrow = require("boring-tomorrow")
+--   vim.g.fzf_colors = boring_tomorrow.fzf_colors
+--
+-- https://github.com/junegunn/fzf/blob/master/README-VIM.md#explanation-of-gfzf_colors
+M.fzf_colors = {
+  fg      = {'fg', 'Normal'},
+  bg      = {'bg', 'Normal'},
+  hl      = {'fg', 'Normal'},
+  ['fg+'] = {'fg', 'Normal'},
+  ['bg+'] = {'bg', 'Visual' },
+  ['hl+'] = {'fg', 'Normal'},
+  info    = {'fg', 'Normal'},
+  border  = {'bg', 'Normal'},
+  prompt  = {'fg', 'Normal'},
+  pointer = {'fg', 'Exception'},
+  marker  = {'fg', 'Normal'},
+  spinner = {'fg', 'Normal'},
+  header  = {'fg', 'Normal'}
+}
 
--- github diff colors
-local diffadd = term_colors.green
-local diffrm = term_colors.red
-local diffupdateadd = term_colors.br_green
-local diffupdaterm = term_colors.br_red
+-- usage: in init.lua
+--   require('lualine').setup { options = { theme = boring-tomorrow.lualine_theme } }
+-- https://github.com/nvim-lualine/lualine.nvim
+M.lualine_theme = {
+  normal = {
+    a = { fg = M.term_colors.br_white, bg = M.term_colors.green, gui = 'bold' },
+    b = { fg = M.term_colors.black, bg = M.term_colors.white },
+    c = { fg = M.term_colors.black, bg = M.term_colors.white },
+  },
+  insert = { a = { fg = M.term_colors.br_white, bg = M.term_colors.blue, gui = 'bold' } },
+  visual = { a = { fg = M.term_colors.br_white, bg = M.term_colors.red, gui = 'bold' } },
+  replace = { a = { fg = M.term_colors.br_white, bg = M.term_colors.magenta, gui = 'bold' } },
+  inactive = {
+    a = { fg = M.term_colors.black, bg = M.term_colors.white, gui = 'bold' },
+    b = { fg = M.term_colors.black, bg = M.term_colors.white },
+    c = { fg = M.term_colors.black, bg = M.term_colors.white },
+  },
+}
 
-local hl = function(group, params)
-  local cterm_params = {}
-  if params.fg then cterm_params.ctermfg = params.fg end
-  if params.bg then cterm_params.ctermbg = params.bg end
-  if params.bold then
-    cterm_params.bold = true
-    cterm_params.cterm = cterm_params.cterm or {}
-    cterm_params.cterm.bold = true
+-- usage: in colors/boring-tomorrow.lua
+--   require("boring-tomorrow").load()
+-- test colors: :highlight
+function M.load()
+  vim.o.background = "light"
+  vim.o.termguicolors = false
+
+  if vim.g.colors_name then vim.cmd("hi clear") end
+
+  vim.cmd("syntax reset")
+
+  vim.g.colors_name = "Boring Tomorrow"
+
+  local t = M.term_colors
+
+  -- Used by UI elements implicitly
+  local foreground = t.black
+  local background = "NONE"
+  local selection = t.white
+  local window = "NONE"
+
+  -- github diff colors
+  local diffadd = t.green
+  local diffrm = t.red
+  local diffupdateadd = t.br_green
+  local diffupdaterm = t.br_red
+
+  local hl = function(group, params)
+    return vim.api.nvim_set_hl(0, group, params)
   end
-  if params.reverse then
-    cterm_params.reverse = true
-    cterm_params.cterm = cterm_params.cterm or {}
-    cterm_params.cterm.reverse = true
-  end
-  if params.link then cterm_params.link = params.link end
-  return vim.api.nvim_set_hl(0, group, cterm_params)
+
+  -- Interface Highlighting
+  hl("LineNr", { ctermfg = t.br_black })
+  hl("Normal", { ctermfg = foreground, ctermbg = background })
+  hl("NormalFloat", { link = "Normal" })
+  hl("Winbar", { link = "Normal" })
+  hl("WinbarNC", { link = "Normal" })
+  hl("NonText", { ctermfg = selection })
+  hl("SpecialKey", { ctermfg = selection })
+  hl("Search", { ctermbg = t.br_yellow })
+  hl("CurSearch", { ctermbg = t.br_yellow })
+  hl("TabLine", { ctermbg = window, ctermfg = foreground, reverse = true })
+  hl("TabLineFill", { ctermbg = window, ctermfg = foreground, reverse = true })
+  hl("StatusLine", { ctermbg = window, ctermfg = window, reverse = true })
+  hl("StatusLineNC", { ctermbg = window, ctermfg = foreground, reverse = true })
+  hl("VertSplit", { ctermbg = window, ctermfg = window })
+  hl("Visual", { ctermbg = selection })
+  hl("Directory", { ctermfg = foreground })
+  hl("ModeMsg", { ctermbg = background })
+  hl("MoreMsg", { ctermbg = background })
+  hl("Question", { ctermbg = background })
+  hl("WarningMsg", { ctermfg = foreground, ctermbg = t.br_red })
+  hl("ErrorMsg", { ctermfg = foreground, ctermbg = diffupdaterm })
+  hl("NvimInternalError", { ctermfg = foreground, ctermbg = t.br_red })
+  hl("MatchParen", { ctermbg = t.br_yellow })
+  hl("Folded", { ctermbg = background, ctermfg = foreground })
+  hl("FoldColumn", { ctermbg = background })
+  hl("CursorLine", { ctermbg = window })
+  hl("CursorColumn", { ctermbg = window })
+  hl("Cursor", { ctermbg = foreground, ctermfg = background })
+  hl("PMenu", { ctermfg = foreground, ctermbg = selection })
+  hl("PMenuSel", { ctermfg = foreground, ctermbg = selection, reverse = true })
+  hl("PMenuThumb", { ctermfg = foreground, ctermbg = selection, reverse = true })
+  hl("SignColumn", { ctermbg = background })
+  hl("ColorColumn", { ctermbg = window })
+  hl("Conceal", { ctermfg = foreground, ctermbg = selection })
+
+  -- comments are important, make them stand out
+  hl("Comment", { bold = true, ctermfg = t.black })
+  hl("Todo", { link = "Comment" })
+
+  -- normalize the rest to be black on white
+  hl("Title", {})
+  hl("Identifier", {})
+  hl("Statement", {})
+  hl("Conditional", {})
+  hl("Repeat", {})
+  hl("Structure", {})
+  hl("Function", {})
+  hl("Constant", {})
+  hl("Keyword", {})
+  hl("String", {})
+  hl("Special", {})
+  hl("PreProc", {})
+  hl("Operator", {})
+  hl("Type", {})
+  hl("Define", {})
+  hl("Include", {})
+  hl("vimCommand", {})
+
+  -- git
+  hl("gitcommitSummary", { bold = true })
+
+  hl("diffAdded", { ctermbg = diffadd })
+  hl("diffRemoved", { ctermbg = diffrm })
+  hl("DiffAdd", { ctermbg = diffupdateadd })
+  hl("DiffChange", {})
+  hl("DiffDelete", { ctermbg = diffrm })
+  hl("DiffText", { ctermbg = diffupdateadd })
+
+  hl("CocGitChangedSign", { ctermbg = background })
+  hl("CocGitAddedSign", { ctermbg = background })
+  hl("CocGitRemovedSign", { ctermbg = background })
+  hl("CocGitChangeRemovedSign", { ctermbg = background })
+
+  -- ShowMarks Highlighting
+  hl("ShowMarksHLl", { ctermfg = t.yellow, ctermbg = background })
+  hl("ShowMarksHLo", { ctermfg = t.magenta, ctermbg = background })
+  hl("ShowMarksHLu", { ctermfg = t.br_yellow, ctermbg = background })
+  hl("ShowMarksHLm", { ctermfg = t.cyan, ctermbg = background })
+
+  -- misc
+  hl("Underlined", { ctermfg = foreground })
+  hl("CocMenuSel", { bold = true })
+  hl("CocSearch", { ctermfg = foreground, ctermbg = t.br_yellow })
 end
 
--- Interface Highlighting
-hl("LineNr", { fg = term_colors.br_black })
-hl("Normal", { fg = foreground, bg = background })
-hl("NormalFloat", { link = "Normal" })
-hl("Winbar", { link = "Normal" })
-hl("WinbarNC", { link = "Normal" })
-hl("NonText", { fg = selection })
-hl("SpecialKey", { fg = selection })
-hl("Search", { bg = term_colors.br_yellow })
-hl("CurSearch", { bg = term_colors.br_yellow })
-hl("TabLine", { bg = window, fg = foreground, reverse = true })
-hl("TabLineFill", { bg = window, fg = foreground, reverse = true })
-hl("StatusLine", { bg = window, fg = window, reverse = true })
-hl("StatusLineNC", { bg = window, fg = foreground, reverse = true })
-hl("VertSplit", { bg = window, fg = window })
-hl("Visual", { bg = selection })
-hl("Directory", { fg = foreground })
-hl("ModeMsg", { bg = background })
-hl("MoreMsg", { bg = background })
-hl("Question", { bg = background })
-hl("WarningMsg", { fg = foreground, bg = term_colors.br_red })
-hl("ErrorMsg", { fg = foreground, bg = diffupdaterm })
-hl("NvimInternalError", { fg = foreground, bg = term_colors.br_red })
-hl("MatchParen", { bg = term_colors.br_yellow })
-hl("Folded", { bg = background, fg = foreground })
-hl("FoldColumn", { bg = background })
-hl("CursorLine", { bg = window })
-hl("CursorColumn", { bg = window })
-hl("Cursor", { bg = foreground, fg = background })
-hl("PMenu", { fg = foreground, bg = selection })
-hl("PMenuSel", { fg = foreground, bg = selection, reverse = true })
-hl("PMenuThumb", { fg = foreground, bg = selection, reverse = true })
-hl("SignColumn", { bg = background })
-hl("ColorColumn", { bg = window })
-hl("Conceal", { fg = foreground, bg = selection })
-
--- comments are important, make them stand out
-hl("Comment", { fg = term_colors.green, bold = true })
-hl("Todo", { link = "Comment" })
-
--- normalize the rest to be black on white
-hl("Title", {})
-hl("Identifier", {})
-hl("Statement", {})
-hl("Conditional", {})
-hl("Repeat", {})
-hl("Structure", {})
-hl("Function", {})
-hl("Constant", {})
-hl("Keyword", {})
-hl("String", {})
-hl("Special", {})
-hl("PreProc", {})
-hl("Operator", {})
-hl("Type", {})
-hl("Define", {})
-hl("Include", {})
-hl("vimCommand", {})
-
--- git
-hl("gitcommitSummary", { bold = true })
-
-hl("diffAdded", { bg = diffadd })
-hl("diffRemoved", { bg = diffrm })
-hl("DiffAdd", { bg = diffupdateadd })
-hl("DiffChange", {})
-hl("DiffDelete", { bg = diffrm })
-hl("DiffText", { bg = diffupdateadd })
-
-hl("CocGitChangedSign", { bg = background })
-hl("CocGitAddedSign", { bg = background })
-hl("CocGitRemovedSign", { bg = background })
-hl("CocGitChangeRemovedSign", { bg = background })
-
--- ShowMarks Highlighting
-hl("ShowMarksHLl", { fg = term_colors.yellow, bg = background })
-hl("ShowMarksHLo", { fg = term_colors.magenta, bg = background })
-hl("ShowMarksHLu", { fg = term_colors.br_yellow, bg = background })
-hl("ShowMarksHLm", { fg = term_colors.cyan, bg = background })
-
--- misc
-hl("Underlined", { fg = foreground })
-hl("CocMenuSel", { bold = true })
-hl("CocSearch", { fg = foreground, bg = term_colors.br_yellow })
+return M

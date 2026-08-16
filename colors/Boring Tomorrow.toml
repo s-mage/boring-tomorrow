@@ -1,7 +1,24 @@
+# Usage: in ~/.wezterm.lua
+#
+# -- Register external color scheme directory
+# local colors_dir = wezterm.home_dir .. '/opensource/boring-tomorrow/colors'
+# config.color_scheme_dirs = { colors_dir }
+#
+# -- Set the color scheme to the one we just defined
+# config.color_scheme = 'Boring Tomorrow'
+
+# -- Only thing not covered in the theme is the command palette
+# -- https://github.com/wezterm/wezterm/issues/7127
+# config.command_palette_fg_color = "#000000"
+# config.command_palette_bg_color = "#efefef"
+# config.command_palette_font = wezterm.font "Fira Code"
+
+
+# https://wezterm.org/config/appearance.html#defining-your-own-colors
 [colors]
 foreground = "#000000"
 background = "#ffffff"
-cursor_bg = "#000000"
+cursor_bg = "#0064bc"
 cursor_fg = "#ffffff"
 selection_bg = "#efefef"
 selection_fg = "#000000"
@@ -29,21 +46,6 @@ brights = [
 ]
 
 [colors.indexed]
-  "1" = "#000000"
-  "2" = "#c82829"
-  "3" = "#718c00"
-  "4" = "#f5871f"
-  "5" = "#4271ae"
-  "6" = "#8959a8"
-  "7" = "#3e999f"
-  "8" = "#efefef"
-  "9" = "#8e908c"
-  "10" = "#ffc1bf"
-  "11" = "#aaf2bb"
-  "12" = "#fee2ae"
-  "13" = "#a9ddff"
-  "14" = "#d7005f"
-  "15" = "#27bbbb"
   "16" = "#ffffff"
   "17" = "#dbe1ef"
   "18" = "#b7c3df"
@@ -283,8 +285,7 @@ brights = [
   "252" = "#282828"
   "253" = "#1f1f1f"
   "254" = "#181818"
-  "255" = "#0e0e0e"
-
+  "255" = "#000000"
 
 [colors.tab_bar]
 inactive_tab_edge = "#ffffff"
