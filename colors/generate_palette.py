@@ -140,7 +140,7 @@ def generate_256_palette(base16, bg, fg, harmonious=True):
                 palette.append(rgb_to_hex(*rgb_val))
                 
     for i in range(24):
-        t = (24 - i) / 25
+        t = (i + 1) / 25
         lab = lerp_lab(t, base8_lab[0], base8_lab[7])
         rgb_val = lab_to_rgb2(*lab)
         palette.append(rgb_to_hex(*rgb_val))
