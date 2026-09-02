@@ -6,7 +6,7 @@
 local M = {}
 
 M.term_colors = {
-  black = 255,
+  black = "NONE",
   red = 1,
   green = 2,
   yellow = 3,
@@ -86,8 +86,8 @@ function M.load()
   local window = "NONE"
 
   -- github diff colors
-  local diffadd = t.green
-  local diffrm = t.red
+  local diffadd = t.br_green
+  local diffrm = t.br_red
   local diffupdateadd = t.br_green
   local diffupdaterm = t.br_red
 
@@ -132,7 +132,7 @@ function M.load()
   hl("Conceal", { ctermfg = foreground, ctermbg = selection })
 
   -- comments are important, make them stand out
-  hl("Comment", { bold = true, ctermfg = t.black })
+  hl("Comment", { bold = true, ctermfg = foreground })
   hl("Todo", { link = "Comment" })
 
   -- normalize the rest to be black on white
@@ -179,6 +179,7 @@ function M.load()
   hl("Underlined", { ctermfg = foreground })
   hl("CocMenuSel", { bold = true })
   hl("CocSearch", { ctermfg = foreground, ctermbg = t.br_yellow })
+
 end
 
 return M

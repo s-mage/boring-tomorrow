@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+    Boring Tomorrow for bat — ANSI version.
+
+    Philosophy: same as nvim boring-tomorrow.lua (termguicolors=false):
+    foreground/background are the terminal's defaults (AA=01), most code
+    stays black-on-white (the global foreground), only comments are bold,
+    diffs use the terminal palette. nvim uses br_green/br_red *backgrounds*
+    (t.br_green/t.br_red) but bat/syntect ignores scope backgrounds and
+    only renders foreground — so we approximate diffs with foreground
+    palette green/red (02/01) which still adapts to wezterm.
+
+    Colors are encoded as #RRGGBBAA where:
+      AA=01 → terminal default fg/bg (adapts to wezterm light/dark)
+      AA=00 → RR is an ANSI palette index 00-0f (base16-style)
+               00 black, 01 red, 02 green, 03 yellow, 04 blue, 05 magenta,
+               06 cyan, 07 white, 08 br_black, 09 br_red, 0a br_green,
+               0b br_yellow, 0c br_blue, 0d br_magenta, 0e br_cyan, 0f br_white
+               See colors/Boring Tomorrow.toml and boring-tomorrow.lua:8-25.
+
+    Based on bat's ansi.tmTheme / base16.tmTheme but boring-ified:
+    comments bold, everything else falls back to the global foreground.
+    Ideally inserted/deleted would get br_green/br_red backgrounds like
+    nvim's diffAdded/DiffAdd (t.br_green) but bat only renders foreground.
+
+    Install:
+      mkdir -p "$(bat --config-dir)/themes"
+      ln -sf "$(pwd)/themes/Boring Tomorrow.tmTheme" "$(bat --config-dir)/themes/"
+      bat cache --build
+      bat --list-themes | grep "Boring Tomorrow"
+    -->
+    <key>name</key>
+    <string>Boring Tomorrow</string>
+    <key>colorSpaceName</key>
+    <string>sRGB</string>
+    <key>settings</key>
+    <array>
+        <!-- Global settings -->
+        <dict>
+            <key>settings</key>
+            <dict>
+                <key>background</key>
+                <string>#00000001</string>
+                <key>foreground</key>
+                <string>#00000001</string>
+                <key>caret</key>
+                <string>#00000001</string>
+                <key>invisibles</key>
+                <string>#08000000</string>
+                <key>lineHighlight</key>
+                <string>#00000001</string>
+                <key>selection</key>
+                <string>#07000000</string>
+                <key>selectionForeground</key>
+                <string>#00000001</string>
+                <key>gutter</key>
+                <string>#00000001</string>
+                <key>gutterForeground</key>
+                <string>#08000000</string>
+                <key>findHighlight</key>
+                <string>#0b000000</string>
+                <key>findHighlightForeground</key>
+                <string>#00000001</string>
+            </dict>
+        </dict>
+
+        <!-- Comments are important, make them stand out — boring-tomorrow.lua:134 -->
+        <dict>
+            <key>name</key>
+            <string>Comment</string>
+            <key>scope</key>
+            <string>comment, punctuation.definition.comment</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#00000001</string>
+                <key>fontStyle</key>
+                <string>bold</string>
+            </dict>
+        </dict>
+
+        <!-- Diffs — nvim uses t.br_green/t.br_red backgrounds (0a/09) but bat ignores
+             scope backgrounds, so we use foreground green/red (02/01) as fallback.
+             Foreground is darker than br_* on light background and remains readable. -->
+        <dict>
+            <key>name</key>
+            <string>Inserted</string>
+            <key>scope</key>
+            <string>markup.inserted, markup.inserted.diff</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#02000000</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Deleted</string>
+            <key>scope</key>
+            <string>markup.deleted, markup.deleted.diff</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#01000000</string>
+            </dict>
+        </dict>
+        <!-- Diff headers/hunks — keep boring (no background), subtle foreground if needed -->
+        <dict>
+            <key>name</key>
+            <string>Diff Header</string>
+            <key>scope</key>
+            <string>meta.diff.header, meta.diff.header.git</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#00000001</string>
+                <key>fontStyle</key>
+                <string>bold</string>
+            </dict>
+        </dict>
+    </array>
+    <key>uuid</key>
+    <string>7b8b1f9a-9a2c-4a7a-bf3d-boring-tomorrow</string>
+</dict>
+</plist>
