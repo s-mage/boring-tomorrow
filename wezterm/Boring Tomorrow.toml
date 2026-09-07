@@ -1,7 +1,7 @@
 # Usage: in ~/.wezterm.lua
 #
 # -- Register external color scheme directory
-# local colors_dir = wezterm.home_dir .. '/opensource/boring-tomorrow/colors'
+# local colors_dir = wezterm.home_dir .. '/opensource/boring-tomorrow/wezterm'
 # config.color_scheme_dirs = { colors_dir }
 #
 # -- Set the color scheme to the one we just defined
