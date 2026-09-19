@@ -24,11 +24,9 @@ M.term_colors = {
   br_white = 15,
 }
 
--- usage: in init.lua
---   local boring_tomorrow = require("boring-tomorrow")
---   vim.g.fzf_colors = boring_tomorrow.fzf_colors
---
 -- https://github.com/junegunn/fzf/blob/master/README-VIM.md#explanation-of-gfzf_colors
+-- set via M.setup() when fzf.vim is installed, or manually:
+--   vim.g.fzf_colors = require("boring-tomorrow").fzf_colors
 M.fzf_colors = {
   fg      = {'fg', 'Normal'},
   bg      = {'bg', 'Normal'},
@@ -45,9 +43,9 @@ M.fzf_colors = {
   header  = {'fg', 'Normal'}
 }
 
--- usage: in init.lua
---   require('lualine').setup { options = { theme = boring-tomorrow.lualine_theme } }
 -- https://github.com/nvim-lualine/lualine.nvim
+-- set via M.setup() when lualine.nvim is installed, or manually:
+--   require('lualine').setup { options = { theme = require("boring-tomorrow").lualine_theme } }
 M.lualine_theme = {
   normal = {
     a = { fg = M.term_colors.br_white, bg = M.term_colors.green, gui = 'bold' },
@@ -180,6 +178,19 @@ function M.load()
   hl("CocMenuSel", { bold = true })
   hl("CocSearch", { ctermfg = foreground, ctermbg = t.br_yellow })
 
+end
+
+-- one-liner for init.lua: require("boring-tomorrow").setup()
+-- loads the colorscheme and, if installed, configures fzf.vim + lualine.nvim
+function M.setup()
+  vim.cmd("colorscheme boring-tomorrow")
+  if vim.fn.exists("g:loaded_fzf_vim") == 1 then
+    vim.g.fzf_colors = M.fzf_colors
+  end
+  local ok, lualine = pcall(require, "lualine")
+  if ok then
+    lualine.setup({ options = { theme = M.lualine_theme } })
+  end
 end
 
 return M

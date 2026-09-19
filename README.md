@@ -20,4 +20,58 @@ The other is different apps and plugins specifying the terminal colors. There ar
 
 ## Installation
 
-TODO
+Ideally the themes would be available to you where you usually pick them. I hope to get there, but until we're not, you have to link a bunch of files from these repo to your dotfiles, and then enable the themes.
+
+### Clone and symlink
+
+```sh
+git clone https://github.com/s-mage/boring-tomorrow.git
+cd boring-tomorrow
+
+# wezterm
+mkdir -p ~/.config/wezterm/colors
+ln -sf "$PWD/wezterm/Boring Tomorrow.toml" ~/.config/wezterm/colors/"Boring Tomorrow.toml"
+
+# neovim
+mkdir -p ~/.config/nvim/lua/boring-tomorrow ~/.config/nvim/colors
+ln -sf "$PWD/nvim/boring-tomorrow.lua" ~/.config/nvim/lua/boring-tomorrow/init.lua
+ln -sf "$PWD/nvim/colors/boring-tomorrow.lua" ~/.config/nvim/colors/boring-tomorrow.lua
+
+# bat, used separately and as nvim preview
+mkdir -p "$(bat --config-dir)/themes"
+ln -sf "$PWD/bat/Boring Tomorrow.tmTheme" "$(bat --config-dir)/themes/"
+bat cache --build
+bat --list-themes | grep "Boring Tomorrow" # verify
+```
+
+### wezterm
+
+In `~/.config/wezterm/wezterm.lua` (or `~/.wezterm.lua`):
+
+```lua
+config.color_scheme = 'Boring Tomorrow'
+
+-- don't dim bold:
+config.bold_brightens_ansi_colors = false
+
+-- use matching command palette colors:
+config.command_palette_fg_color = "#000000"
+config.command_palette_bg_color = "#efefef"
+```
+
+### nvim
+
+In `~/.config/nvim/init.lua`:
+
+```lua
+require("boring-tomorrow").setup()
+```
+
+### bat
+
+Set the theme globally (pick one — `BAT_THEME` overrides the config file):
+
+```sh
+echo '--theme="Boring Tomorrow"' >> "$(bat --config-file)"
+# or: export BAT_THEME="Boring Tomorrow" # in .bashrc/.zshrc
+```
