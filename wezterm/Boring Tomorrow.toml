@@ -1,12 +1,15 @@
-# Usage: in ~/.wezterm.lua
+# Usage:
 #
-# -- Register external color scheme directory
-# local colors_dir = wezterm.home_dir .. '/opensource/boring-tomorrow/wezterm'
-# config.color_scheme_dirs = { colors_dir }
+# 1. ln the file where wezterm would find it
+#
+# mkdir -p ~/.config/wezterm/colors
+# ln -sf "$PWD/wezterm/Boring Tomorrow.toml" ~/.config/wezterm/colors/"Boring Tomorrow.toml"
+#
+# 2. in ~/.wezterm.lua
 #
 # -- Set the color scheme to the one we just defined
 # config.color_scheme = 'Boring Tomorrow'
-
+#
 # -- Only thing not covered in the theme is the command palette
 # -- https://github.com/wezterm/wezterm/issues/7127
 # config.command_palette_fg_color = "#000000"
