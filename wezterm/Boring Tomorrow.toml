@@ -23,7 +23,7 @@ foreground = "#000000"
 background = "#ffffff"
 cursor_bg = "#0064bc"
 cursor_fg = "#ffffff"
-selection_bg = "#efefef"
+selection_bg = "#fee2ae"
 selection_fg = "#000000"
 
 ansi = [

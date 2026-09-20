@@ -1,6 +1,6 @@
 -- .config/nvim/lua/boring-tomorrow/init.lua
 -- Boring Tomorrow colorscheme.
--- Colors used by the colorscheme itself, fzf.vim and lualine.nvim live here.
+-- Colors used by the colorscheme itself, lualine.nvim live here.
 -- for autoload: :help runtimepath
 
 local M = {}
@@ -22,25 +22,6 @@ M.term_colors = {
   br_magenta = 13,
   br_cyan = 14,
   br_white = 15,
-}
-
--- https://github.com/junegunn/fzf/blob/master/README-VIM.md#explanation-of-gfzf_colors
--- set via M.setup() when fzf.vim is installed, or manually:
---   vim.g.fzf_colors = require("boring-tomorrow").fzf_colors
-M.fzf_colors = {
-  fg      = {'fg', 'Normal'},
-  bg      = {'bg', 'Normal'},
-  hl      = {'fg', 'Normal'},
-  ['fg+'] = {'fg', 'Normal'},
-  ['bg+'] = {'bg', 'Visual' },
-  ['hl+'] = {'fg', 'Normal'},
-  info    = {'fg', 'Normal'},
-  border  = {'bg', 'Normal'},
-  prompt  = {'fg', 'Normal'},
-  pointer = {'fg', 'Exception'},
-  marker  = {'fg', 'Normal'},
-  spinner = {'fg', 'Normal'},
-  header  = {'fg', 'Normal'}
 }
 
 -- https://github.com/nvim-lualine/lualine.nvim
@@ -181,12 +162,9 @@ function M.load()
 end
 
 -- one-liner for init.lua: require("boring-tomorrow").setup()
--- loads the colorscheme and, if installed, configures fzf.vim + lualine.nvim
+-- loads the colorscheme and, if installed, configures lualine.nvim
 function M.setup()
   vim.cmd("colorscheme boring-tomorrow")
-  if vim.fn.exists("g:loaded_fzf_vim") == 1 then
-    vim.g.fzf_colors = M.fzf_colors
-  end
   local ok, lualine = pcall(require, "lualine")
   if ok then
     lualine.setup({ options = { theme = M.lualine_theme } })

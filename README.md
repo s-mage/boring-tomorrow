@@ -67,6 +67,15 @@ In `~/.config/nvim/init.lua`:
 require("boring-tomorrow").setup()
 ```
 
+### fzf
+
+FZF uses `FZF_DEFAULT_OPTS` ENV for default settings, so, in your `~/.bashrc`:
+
+```
+# -1 = terminal default, 5 = magenta, hl 3:bold = dark-yellow matches.
+export FZF_DEFAULT_OPTS='--color=16,fg:-1,bg:-1,fg+:-1,bg+:-1,gutter:-1,border:-1,preview-border:-1,list-border:-1,separator:-1,scrollbar:-1,label:-1,list-label:-1,preview-label:-1,query:-1,prompt:-1,info:-1,header:-1,disabled:-1,preview-fg:-1,preview-bg:-1,list-fg:-1,list-bg:-1,spinner:5,pointer:-1,marker:-1,hl:3:bold,hl+:3:bold'
+```
+
 ### bat
 
 Set the theme globally (pick one — `BAT_THEME` overrides the config file):
