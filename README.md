@@ -16,7 +16,11 @@ Then there was a realisation that highlight groups (especially those that use on
 
 Two things, actualy. One is a terminal colorscheme. Wezterm to be specific, but there might be versions for other terminals in the future, if you send a patch.
 
-The other is different apps and plugins specifying the terminal colors. There are neovim colors, and inside neovim there are fzf.vim and lualine plugins. fzf.nvim uses bat for previews, so there is a bat theme also that uses the same highlighting principles.
+The other is different apps and plugins specifying the terminal colors. There are neovim colors, and inside neovim there are lualine colors. If you use fzf in any form, it uses bat for previews, so there is a bat theme and fzf colors ENV also that uses the same highlighting principles.
+
+![neovim with lualine](examples/nvim-lualine.png)
+
+![fzf with bat](examples/fzf-bat.png)
 
 ## Installation
 
