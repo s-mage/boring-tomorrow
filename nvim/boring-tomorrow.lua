@@ -6,7 +6,8 @@
 local M = {}
 
 M.term_colors = {
-  black = "NONE",
+  default = "NONE",
+  black = 0,
   red = 1,
   green = 2,
   yellow = 3,
@@ -59,8 +60,8 @@ function M.load()
   local t = M.term_colors
 
   -- Used by UI elements implicitly
-  local foreground = t.black
-  local background = "NONE"
+  local foreground = t.default
+  local background = t.default
   local selection = t.white
   local window = "NONE"
 
