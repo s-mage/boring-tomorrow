@@ -65,6 +65,9 @@ config.bold_brightens_ansi_colors = false
 -- use matching command palette colors:
 config.command_palette_fg_color = "#000000"
 config.command_palette_bg_color = "#efefef"
+
+-- ensure contrast:
+config.text_min_contrast_ratio = 2
 ```
 
 ### nvim
