@@ -22,6 +22,10 @@ The other is different apps and plugins specifying the terminal colors. There ar
 
 ![fzf with bat](examples/fzf-bat.png)
 
+Use with different themes:
+
+![nvim with different wezterm colors](examples/themes.png)
+
 ## Installation
 
 Ideally the themes would be available to you where you usually pick them. I hope to get there, but until we're not, you have to link a bunch of files from these repo to your dotfiles, and then enable the themes.
